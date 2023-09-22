@@ -1,1 +1,2 @@
-//include header footer main
+<?php
+//đây là trang chủ index
