@@ -1,0 +1,9 @@
+HƯỚNG DẪN MỌI NGƯỜI ĐỒ ÁN KÌ 1 NHÉ
+
+
+
+
+DATABASE:
+
+Mọi người backup file database: database.sql tôi để trong thư mục github 
+lên localhost/phpmyadmin nhé
