@@ -1,5 +1,5 @@
 <?php
-require_once "./config.php";
+require_once "../utils/config.php";
 error_reporting(0);
 $username = $password = $email = "";
 $usernameERR = $passwordERR = $emailERR = "";
@@ -128,7 +128,7 @@ if (isset($_POST['_submit'])) {
 
                             <script>
                                 document.getElementById("backButton").addEventListener("click", function() {
-                                    window.location.href = "./index.php";
+                                    window.location.href = "../index.php";
                                 });
                             </script>
 

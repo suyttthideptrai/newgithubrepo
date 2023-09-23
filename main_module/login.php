@@ -1,6 +1,6 @@
 <?php
-require_once "config.php";
-
+require_once "../utils/config.php";
+session_start();
 
 $username = $password = "";
 $usernameERR = $passwordERR = "";
@@ -17,29 +17,33 @@ if (isset($_POST['_submit'])) {
         if (empty($_POST['password'])) {
             $passwordERR = "Please enter a password";
         } else {
-            $password = sanitize($_POST['password']);
-            $password_hashed = sha1($password);
+            $password = sha1($_POST['password']);
         }
 
-        $userInfo = [];
 
-        $sqlstr = "SELECT username,email from users where username = ? and password = ?";
+        $sqlstr = "SELECT UserID, Username, Password from users where username = ?";
         $stmt = $conn->prepare($sqlstr);
-        $stmt->bind_param("ss", $username, $password_hashed);
-        $stmt->execute();
-        $resultArray = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        $stmt->bind_param("s", $username);
+        $BooleanResult = $stmt->execute();
+        $result = $stmt->get_result();
+        if ($BooleanResult && $result->num_rows === 1){
+            $user = $result->fetch_assoc();
+            dd($user);
+            if(hash_equals($password, $user['Password'])){
+            
+            $_SESSION['User']['ID'] = $user['UserID'];
+            $_SESSION['User']['Username'] = $user['Username'];
+            header('Location: ../index.php');
+            exit();
+            } else {
+            
+            echo "<script>window.alert('Login failed, wrong user credentials'</script>";
+            // header('Location: ../index.php');
 
-        if (count($resultArray) > 0) {
-            // start the session
-            session_start();
-
-            $userInfo = $resultArray[0];
-            $_SESSION['userInfo'] = $userInfo;
-
-            header("Location: ./index.php");
-        } else {
-            echo '<div class="alert alert-danger alert-dismissable">Login failed</div>';
+            exit();
+            }
         }
+
     } catch (mysqli_sql_exception $e) {
         echo '<div class="alert alert-danger">Có lỗi xảy ra, vui lòng kiểm tra lại cấu hình!</div>';
     } catch (Exception $e) {
