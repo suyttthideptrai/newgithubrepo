@@ -12,6 +12,12 @@ if(isset($_SESSION['User'])){
     echo 'Hello User: ' . $_SESSION['User']['Username'];
 }
 ?>
+<br>
+<?php
+if(isset($_SESSION['User']) && $_SESSION['User']['Role'] === 0){
+    echo '<a href="admin/home.php">page administration</a> <br>';
+}
+?>
 <?php
 if(!isset($_SESSION['User'])){
     echo '<br>

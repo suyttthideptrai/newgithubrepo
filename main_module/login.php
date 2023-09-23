@@ -21,7 +21,7 @@ if (isset($_POST['_submit'])) {
         }
 
 
-        $sqlstr = "SELECT UserID, Username, Password from users where username = ?";
+        $sqlstr = "SELECT UserID, Username, Password, Role from users where username = ?";
         $stmt = $conn->prepare($sqlstr);
         $stmt->bind_param("s", $username);
         $BooleanResult = $stmt->execute();
@@ -33,6 +33,7 @@ if (isset($_POST['_submit'])) {
             
             $_SESSION['User']['ID'] = $user['UserID'];
             $_SESSION['User']['Username'] = $user['Username'];
+            $_SESSION['User']['Role'] = $user['Role'];
             header('Location: ../index.php');
             exit();
             } else {
