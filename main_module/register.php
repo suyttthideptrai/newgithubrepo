@@ -5,6 +5,7 @@ $username = $password = $email = "";
 $usernameERR = $passwordERR = $emailERR = "";
 $success = false;
 
+
 if (isset($_POST['_submit'])) {
     try {
         if (empty($_POST['username'])) {
@@ -32,7 +33,9 @@ if (isset($_POST['_submit'])) {
         if ($result->num_rows > 0) {
             echo '<div class="alert alert-danger">Username error duplicate!</div>';
         } else {
-            $sqlstr = "INSERT INTO users(username, password, email) VALUES ('$username', '$password_hashed', '$email')";
+            $t = time();
+            $currentDatetime = date('Y-m-d H:i:s', $t);
+            $sqlstr = "INSERT INTO users(username, password, email, created_at, updated_at) VALUES ('$username', '$password_hashed', '$email', '$currentDatetime', '$currentDatetime')";
             $result = $conn->query($sqlstr);
             if ($result) {
                 $success = true;
@@ -41,7 +44,7 @@ if (isset($_POST['_submit'])) {
             }
         }
     } catch (mysqli_sql_exception $e) {
-        echo '<div class="alert alert-danger">Có lỗi xảy ra, vui lòng kiểm tra lại cấu hình!</div>';
+        echo '<div class="alert alert-danger">Seems there are somthing wrong with our server, please wait or contact Moonlight.support@example.com for support</div>';
     } catch (Exception $e) {
         echo '<div class="alert alert-danger">' . $e->getMessage() . '</div>';
     }
