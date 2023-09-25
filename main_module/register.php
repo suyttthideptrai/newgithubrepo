@@ -4,20 +4,29 @@ error_reporting(0);
 $username = $password = $email = "";
 $usernameERR = $passwordERR = $emailERR = "";
 $success = false;
+$error_message = "";
 
 
 if (isset($_POST['_submit'])) {
     try {
+        // Kiểm tra và xử lý dữ liệu đầu vào
         if (empty($_POST['username'])) {
             $usernameERR = "Username is required";
         } else {
             $username = sanitize($_POST['username']);
+            if (strlen($username) < 8) {
+                $usernameERR = "Username must be at least 8 characters long";
+            }
         }
 
         if (empty($_POST['password'])) {
             $passwordERR = "Password is required";
         } else {
             $password = sanitize($_POST['password']);
+            if (!preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/", $password)) {
+                $passwordERR = "Password must contain at least one lowercase letter, one uppercase letter, and one digit";
+            }
+            
             $password_hashed = sha1($password);
         }
 
@@ -27,26 +36,32 @@ if (isset($_POST['_submit'])) {
             $email = sanitize($_POST['email']);
         }
 
-        $sqlstr = "SELECT * FROM users WHERE username = '$username'";
-        $result = $conn->query($sqlstr);
-
-        if ($result->num_rows > 0) {
-            echo '<div class="alert alert-danger text-center">Username error duplicate!</div>';
-        } else {
-            $t = time();
-            $currentDatetime = date('Y-m-d H:i:s', $t);
-            $sqlstr = "INSERT INTO users(username, password, email, created_at, updated_at) VALUES ('$username', '$password_hashed', '$email', '$currentDatetime', '$currentDatetime')";
+        // Kiểm tra xem có lỗi không
+        if (empty($usernameERR) && empty($passwordERR) && empty($emailERR)) {
+            // Nếu không có lỗi, tiến hành kiểm tra username và thực hiện đăng ký
+            $sqlstr = "SELECT * FROM users WHERE username = '$username'";
             $result = $conn->query($sqlstr);
-            if ($result) {
-                $success = true;
+
+            if ($result->num_rows > 0) {
+                $error_message = "Create Account failed, username already exists";
             } else {
-                echo '<div class="alert alert-danger text-center">Error !' . $conn->error . '</div>';
+                $t = time();
+                $currentDatetime = date('Y-m-d H:i:s', $t);
+                $sqlstr = "INSERT INTO users(username, password, email, created_at, updated_at) VALUES ('$username', '$password_hashed', '$email', '$currentDatetime', '$currentDatetime')";
+                $result = $conn->query($sqlstr);
+                if ($result) {
+                    $success = true;
+                } else {
+                    $error_message = "Create Account failed, please try again later";
+                }
             }
+        } else {
+            $error_message = "Please check the entered data again";
         }
     } catch (mysqli_sql_exception $e) {
-        echo '<div class="alert alert-danger text-center">Seems there are somthing wrong with our server, please wait or contact Moonlight.support@example.com for support</div>';
+        $error_message = "Please check the entered data again";
     } catch (Exception $e) {
-        echo '<div class="alert alert-danger text-center">' . $e->getMessage() . '</div>';
+        $error_message = "Please check the entered data again";
     }
 }
 ?>
@@ -61,7 +76,6 @@ if (isset($_POST['_submit'])) {
     <style>
         .errors {
             color: red;
-            padding-left: 20px;
             font-size: 16px;
         }
 
@@ -104,6 +118,11 @@ if (isset($_POST['_submit'])) {
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Register Account Moonlight Festival</h5>
+                        <?php 
+                            if (!empty($error_message)){
+                                echo '<div class="alert alert-danger text-center">' . $error_message .'</div>';
+                            }
+                        ?>
                         <form action="" method="POST">
                             <div class="mb-2">
                                 <label class="form-label" for="username">Username: </label>
