@@ -31,7 +31,7 @@ if (isset($_POST['_submit'])) {
         $result = $conn->query($sqlstr);
 
         if ($result->num_rows > 0) {
-            echo '<div class="alert alert-danger">Username error duplicate!</div>';
+            echo '<div class="alert alert-danger text-center">Username error duplicate!</div>';
         } else {
             $t = time();
             $currentDatetime = date('Y-m-d H:i:s', $t);
@@ -40,13 +40,13 @@ if (isset($_POST['_submit'])) {
             if ($result) {
                 $success = true;
             } else {
-                echo '<div class="alert alert-danger">Error !' . $conn->error . '</div>';
+                echo '<div class="alert alert-danger text-center">Error !' . $conn->error . '</div>';
             }
         }
     } catch (mysqli_sql_exception $e) {
-        echo '<div class="alert alert-danger">Seems there are somthing wrong with our server, please wait or contact Moonlight.support@example.com for support</div>';
+        echo '<div class="alert alert-danger text-center">Seems there are somthing wrong with our server, please wait or contact Moonlight.support@example.com for support</div>';
     } catch (Exception $e) {
-        echo '<div class="alert alert-danger">' . $e->getMessage() . '</div>';
+        echo '<div class="alert alert-danger text-center">' . $e->getMessage() . '</div>';
     }
 }
 ?>
@@ -135,7 +135,7 @@ if (isset($_POST['_submit'])) {
                                 });
                             </script>
 
-                            <?php if ($success) echo '<div class="alert alert-success mt-3">Successfully</div>'  ?>
+                            <?php if ($success) echo '<div class="alert alert-success mt-3 text-center">Successfully</div>'  ?>
                         </form>
                     </div>
                 </div>

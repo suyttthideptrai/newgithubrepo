@@ -26,23 +26,28 @@ if (isset($_POST['_submit'])) {
         $stmt->bind_param("s", $username);
         $BooleanResult = $stmt->execute();
         $result = $stmt->get_result();
-        if ($BooleanResult && $result->num_rows === 1){
+
+        $authenticationPassed = false;
+
+        if ($BooleanResult && $result->num_rows === 1) {
             $user = $result->fetch_assoc();
-            dd($user);
-            if(hash_equals($password, $user['Password'])){
-            
-            $_SESSION['User']['ID'] = $user['UserID'];
-            $_SESSION['User']['Username'] = $user['Username'];
-            $_SESSION['User']['Role'] = $user['Role'];
+            if (hash_equals($password, $user['Password'])) {
+                // Xác thực thành công, đặt biến flag thành true
+                $authenticationPassed = true;
+                $_SESSION['User']['ID'] = $user['UserID'];
+                $_SESSION['User']['Username'] = $user['Username'];
+                $_SESSION['User']['Role'] = $user['Role'];
+            }
+        }
+
+        if ($authenticationPassed) {
+            // Chuyển hướng đến trang index.php nếu xác thực thành công
             header('Location: ../index.php');
             exit();
-            } else {
+        } else {
+            // Hiển thị thông báo lỗi trong một div có class 'alert-danger'
+            echo '<div class="alert alert-danger text-center">Login failed, wrong user credentials</div>';
             
-            echo "<script>window.alert('Login failed, wrong user credentials'</script>";
-            // header('Location: ../index.php');
-
-            exit();
-            }
         }
 
     } catch (mysqli_sql_exception $e) {
@@ -120,7 +125,14 @@ if (isset($_POST['_submit'])) {
                 </div>
 
                 <button class="btn btn-success" type="submit" name="_submit">Login</button>
-                <div><?php if ($success) echo '<div class="alert alert-success mt-3">Successfully</div>' ?></div>
+                <button id="Register" class="btn btn-warning" type="button" name="_submit">Register Account</button>
+                <div><?php if ($success) echo '<div class="alert alert-success mt-3 text-center">Successfully</div>' ?></div>
+
+                <script>
+                    document.getElementById("Register").addEventListener("click", function() {
+                        window.location.href = "./register.php";
+                    });
+                </script>
             </form>
         </div>
     </div>
