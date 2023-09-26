@@ -6,6 +6,11 @@ $username = $password = "";
 $usernameERR = $passwordERR = "";
 $success = false;
 
+//Kiểm tra người dùng đã lưu thông tin đăng nhập trong Cookies
+if (isset($_COOKIE['rememeber_username'])){
+    $username = $_COOKIE['rememeber_username'];
+}
+
 if (isset($_POST['_submit'])) {
     try {
         if (empty($_POST['username'])) {
@@ -37,6 +42,13 @@ if (isset($_POST['_submit'])) {
                 $_SESSION['User']['ID'] = $user['UserID'];
                 $_SESSION['User']['Username'] = $user['Username'];
                 $_SESSION['User']['Role'] = $user['Role'];
+
+                //Kiểm tra xem người dùng có chọn Remember me hay không?
+                if (isset($_POST['remember_me']) && $_POST['remember_me'] == 'on'){
+                    //Nếu có, lưu thông tin đăng nhập vào cookies
+                    setcookie('rememeber_username', $username, time() + 3600 * 24 * 30);
+                    //Cookies sẽ hết hạn sau 30 ngày
+                }
             }
         }
 
@@ -112,20 +124,28 @@ if (isset($_POST['_submit'])) {
         <div class="login-form">
             <h5 class="login-title">Login Account</h5>
             <form action="" method="POST">
-                <div class="mb-3">
+                <div class="mb-2">
                     <label class="form-label" for="username">Username: </label>
                     <input class="form-control" type="text" name="username" placeholder="Username" id="username">
                     <span class="errors"><?php echo $usernameERR; ?></span>
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-2">
                     <label class="form-label" for="password">Password: </label>
                     <input class="form-control" type="password" name="password" placeholder="Password" id="password">
                     <span class="errors"><?php echo $passwordERR; ?></span>
                 </div>
 
+                <div class="mb-2">
+                    <label class="form-check-label mx-3" for="rememberMe">
+                        <input class="form-check-input mb-2" type="checkbox" name="remember_me" id="rememberMe"> Remember me
+                    </label>
+                </div>
+
                 <button class="btn btn-success" type="submit" name="_submit">Login</button>
                 <button id="Register" class="btn btn-warning" type="button" name="_submit">Register Account</button>
+
+
                 <div><?php if ($success) echo '<div class="alert alert-success mt-3 text-center">Successfully</div>' ?></div>
 
                 <script>

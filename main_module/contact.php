@@ -1,37 +1,43 @@
 <?php
 require_once "../utils/config.php"
 ?>
-<body>
-    <div class="wrapper">
-        <form method="POST">
-            <div class="form-element">
-                <h3>
-                    Contact Us
-                </h3>
-            </div>
-            <div class="form-element">
-                <h5>
-                    If you encounter issues while using our service, please fill out the following form to help us improve for a better experience.
-                </h5>
-            </div>
-            <div class="form-element">
-                <input class="long-input" type="text" name="name" placeholder="Your Name*" required>
-            </div>
-            <div class="form-element">
-                <input class="long-input" type="email" name="email" placeholder="Email*" required>
-            </div>
-            <div class="form-element">
-                <input class="long-input" type="text" name="phone-number" placeholder="Your Phone Number*" required>
-            </div>
-            <div class="form-element">
-                <input class="long-input" type="text" name="detail" placeholder="Please provide more details into this contact message" required>                
-            </div>
-            <div class="form-element">
-                <button class="long-button" name="contact-submit">Submit</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact us</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<div class="contact-form">
+    <div class="container">
+        <h2 class="text-center">Contact us</h2>
+        <h4 class="text-center">If there are any questions. Please contact us here</h4>
+        <form action="" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-6 form-group mb-2">
+                    <input class="form-control" type="text" name="txtName" placeholder="Name" required>
+                </div>
+                <div class="col-md-6 form-group mb-2">
+                    <input class="form-control" type="email" name="txtEmail" placeholder="Email" required>
+                </div>
+                <div class="col-md-12 form-group mb-2">
+                    <input class="form-control" type="text" name="txtSubject" placeholder="Subject" required>
+                </div>
+                <div class="col-md-12 form-group mb-2">
+                    <textarea class="form-control" name="txtMessage" placeholder="Message" required></textarea>
+                </div>
+                <div class="col-md-12 form-group mb-2">
+                    <input class="form-control" type="file" name="filedinhkem">
+                </div>
+                <div class="col-md-12 form-group mb-2">
+                    <input class="btn btn-primary" type="submit" name="btnSubmit" value="Submit">
+                </div>
             </div>
         </form>
     </div>
-</body>
+</div>
 <?php
     if (isset($_POST['contact-submit'])) {
         $name = $_POST['name'] ?? '';

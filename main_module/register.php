@@ -27,7 +27,6 @@ if (isset($_POST['_submit'])) {
             if (!preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/", $password)) {
                 $passwordERR = "Password must contain at least one lowercase letter, one uppercase letter, and one digit";
             }
-
             $password_hashed = sha1($password);
         }
 
@@ -156,7 +155,7 @@ if (isset($_POST['_submit'])) {
 
                             <script>
                                 document.getElementById("backButton").addEventListener("click", function() {
-                                    window.location.href = "../index.php";
+                                    window.location.href = "./login.php";
                                 });
                             </script>
 
