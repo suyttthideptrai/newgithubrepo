@@ -1,0 +1,3 @@
+<?php
+//Mật khẩu PHPMailer
+//pkdu yqgd inkq xskc

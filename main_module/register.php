@@ -1,6 +1,7 @@
 <?php
 require_once "../utils/config.php";
-error_reporting(0);
+session_start();
+
 $username = $password = $email = "";
 $usernameERR = $passwordERR = $emailERR = "";
 $success = false;
@@ -26,7 +27,7 @@ if (isset($_POST['_submit'])) {
             if (!preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/", $password)) {
                 $passwordERR = "Password must contain at least one lowercase letter, one uppercase letter, and one digit";
             }
-            
+
             $password_hashed = sha1($password);
         }
 
@@ -36,12 +37,16 @@ if (isset($_POST['_submit'])) {
             $email = sanitize($_POST['email']);
         }
 
+        // Gán vào phiên làm việc
+        $_SESSION['username'] = $username;
+        $_SESSION['password'] = $password;
+
+
         // Kiểm tra xem có lỗi không
         if (empty($usernameERR) && empty($passwordERR) && empty($emailERR)) {
             // Nếu không có lỗi, tiến hành kiểm tra username và thực hiện đăng ký
             $sqlstr = "SELECT * FROM users WHERE username = '$username'";
             $result = $conn->query($sqlstr);
-
             if ($result->num_rows > 0) {
                 $error_message = "Create Account failed, username already exists";
             } else {
@@ -50,7 +55,8 @@ if (isset($_POST['_submit'])) {
                 $sqlstr = "INSERT INTO users(username, password, email, created_at, updated_at) VALUES ('$username', '$password_hashed', '$email', '$currentDatetime', '$currentDatetime')";
                 $result = $conn->query($sqlstr);
                 if ($result) {
-                    $success = true;
+                    // Tài khoản đã được thêm thành công vào cơ sở dữ liệu, gửi email xác nhận
+                    require_once "./sendmail_registerSuccess.php";
                 } else {
                     $error_message = "Create Account failed, please try again later";
                 }
@@ -118,10 +124,10 @@ if (isset($_POST['_submit'])) {
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Register Account Moonlight Festival</h5>
-                        <?php 
-                            if (!empty($error_message)){
-                                echo '<div class="alert alert-danger text-center">' . $error_message .'</div>';
-                            }
+                        <?php
+                        if (!empty($error_message)) {
+                            echo '<div class="alert alert-danger text-center">' . $error_message . '</div>';
+                        }
                         ?>
                         <form action="" method="POST">
                             <div class="mb-2">
@@ -154,7 +160,7 @@ if (isset($_POST['_submit'])) {
                                 });
                             </script>
 
-                            <?php if ($success) echo '<div class="alert alert-success mt-3 text-center">Successfully</div>'  ?>
+                            <?php if ($success) echo '<div class="alert alert-success mt-3 text-center">Account created successfully, please check your Email</div>'  ?>
                         </form>
                     </div>
                 </div>
