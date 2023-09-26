@@ -42,7 +42,7 @@ require_once "../utils/config.php"
         $detail = $_POST['detail'] ?? 'null';
         
         
-        $sqlstr = "INSERT INTO contact(name, email, phonenumber, created_at, message) VALUES ('$name', '$phoneNumber', '$email', '$currentDatetime', '$currentDatetime')";
+        $sqlstr = "INSERT INTO contact(name, email, phonenumber, created_at, message) VALUES ('$name', '$email', '$phoneNumber', '$date', '$detail')";
 
         $result = $conn->query($sqlstr);
         if($result){

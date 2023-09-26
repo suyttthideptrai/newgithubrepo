@@ -1,44 +1,6 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-</head>
-<header>
-    <?php
+<?php
     session_start();
-    echo "This is the header part";
-    ?>
-    <br>
-    <?php
-    if(isset($_SESSION['User'])){
-        echo 'Hello User: ' . $_SESSION['User']['Username'];
-    }
-    ?>
-    <br>
-    <?php
-    if(isset($_SESSION['User']) && $_SESSION['User']['Role'] === 0){
-        echo '<a href="admin/home.php">page administration</a> <br>';
-    }
-    ?>
-    <a href="main_module/contact.php">contact us</a>
-    <?php
-    if(!isset($_SESSION['User'])){
-        echo '<br>
-        <a href="main_module/login.php">login</a> <br>
-        <a href="main_module/register.php">register</a> <br>';     
-    }
-    ?>
-    <?php
-    if(isset($_SESSION['User'])){
-        echo '<a href="utils/logout.php">logout</a> <br>';
-    }
-    ?>
-    <hr>
-</header> -->
-
-
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -53,6 +15,11 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous">
+</script>
+
     <script>
         $(document).ready(function () {
             $('#search-button').click(function () {
@@ -62,50 +29,50 @@
     </script>
 
 </head>
-
 <body>
-<style>
-    * {
-    box-sizing: border-box;
-    color: black;
-}
-body{
-    background-color: black;
-}
+<header>
+    <style>
+        * {
+        box-sizing: border-box;
+        color: black;
+        }
+        body{
+            background-color: black;
+        }
 
-.container{
-    justify-content: space-around ;
-    align-items: center;
-    /* height: 30px; */
-}
+        .container{
+            justify-content: space-around ;
+            align-items: center;
+            /* height: 30px; */
+        }
 
-.navbar-collapse{
-    flex-grow: 0;
-}
+        .navbar-collapse{
+            flex-grow: 0;
+        }
 
-#search-box{
-    background-color:transparent;
-    border-radius: 30px;
-    margin-right: 10px;
-}
+        #search-box{
+            background-color:transparent;
+            border-radius: 30px;
+            margin-right: 10px;
+        }
 
-#search-txt{
-    outline:none;
-    border-radius: 20px;;
-    padding: 5px 10px;
-}
+        #search-txt{
+            outline:none;
+            border-radius: 20px;;
+            padding: 5px 10px;
+        }
 
-#search-button{
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    padding:10px;
-}
+        #search-button{
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+            padding:10px;
+        }
 
-.test{
-    width: 100px;
-}
-</style>
+        .test{
+            width: 100px;
+        }
+    </style>
     <div class="navbar navbar-expand-lg bg-white">
         <div class="container">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -113,7 +80,7 @@ body{
                 aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a href="home.html" class="navbar-brand">
+            <a href="index.php" class="navbar-brand">
                 <h2>Logo</h2>
             </a>
             
@@ -121,7 +88,7 @@ body{
                 <ul class="navbar-nav me-auto mb-1 mb-lg-0">
 
                     <li class="nav-item">
-                        <a href="home.html" class="nav-link active">Home</a>
+                        <a href="index.php" class="nav-link active">Home</a>
                     </li>
 
                     <li class="nav-item dropdown">
@@ -201,7 +168,7 @@ body{
                 </ul>
 
             </div>
-            <div id="#ultis " class="d-flex align-items-center">
+            <div id="#ultis" class="d-flex align-items-center">
 
                 <form id="search-box" method="get">
                     <button type="button" id="search-button">
@@ -218,8 +185,28 @@ body{
                     </a>
 
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <!-- <li><a class="dropdown-item" href="#">Sign Up</a></li> -->
-                        <li><a class="dropdown-item" href="#">Sign In</a></li>
+                    <?php
+                        if(isset($_SESSION['User'])){
+                            echo '<li><a class="dropdown-item" href="#">' . 'Hello User: ' . $_SESSION['User']['Username'] . '<a></li>';
+                            }
+                    ?>
+                    <?php
+                        if(isset($_SESSION['User']) && $_SESSION['User']['Role'] === 0){
+                            echo '<li><a class="dropdown-item" href="admin/home.php">Page Administration</a></li>';
+                            }
+                    ?>
+                    <?php
+                        if(isset($_SESSION['User'])){
+                            echo '<li><a class="dropdown-item" href="utils/logout.php">Logout</a></li>';
+                            }
+                    ?>
+                    <?php
+                        if(!isset($_SESSION['User'])){
+                            echo '
+                            <li><a class="dropdown-item" href="main_module/login.php">Sign In</a></li>
+                            <li><a class="dropdown-item" href="main_module/register.php">Sign Up</a></li>';  
+                            }
+                    ?>
                     </ul>
 
                 </div>
@@ -228,11 +215,5 @@ body{
 
         </div>
     </div>
+</header>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
-
-</body>
-
-</html>

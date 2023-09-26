@@ -1,4 +1,4 @@
-<body>
+
 <p>Home page content</p>
 
 <br>
@@ -22,4 +22,3 @@
 <br>
 
 
-</body>

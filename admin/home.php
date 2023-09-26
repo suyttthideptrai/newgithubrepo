@@ -1,5 +1,6 @@
 <?php
     session_start();
+    require_once "views/functions/config.php";
     require_once "header_admin.php";
     require_once "../assets/css/admin_style.html";
 ?>
