@@ -1,7 +1,8 @@
 <?php
 $query = "SELECT festivals.FesID, festivals.FesName, country.CountryName, festivals.DateStart
 FROM festivals
-JOIN country ON festivals.CountryID = country.CountryID;";
+JOIN country ON festivals.CountryID = country.CountryID
+ORDER BY festivals.FesID;";
 $result = mysqli_query($conn, $query);
 
 if (!$result) {
@@ -56,8 +57,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["btn-find"])) {
                 <td><?php echo $row['CountryName']; ?></td>
                 <td><?php echo $row['DateStart']; ?></td>
                 <td>
-                    <a href="edit_festival.php?id=<?php echo $row['FesID']; ?>">Edit</a>
-                    <a href="delete_festival.php?id=<?php echo $row['FesID']; ?>">Delete</a>
+                    <a href="views/functions/festival_edit?id=<?php echo $row['FesID']; ?>">Edit</a>
+                    <a href="views/functions/festival_delete.php?id=<?php echo $row['FesID']; ?>">Delete</a>
                 </td>
             </tr>
         <?php }}else{

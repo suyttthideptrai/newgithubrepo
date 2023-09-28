@@ -1,10 +1,9 @@
-@ -1,267 +0,0 @@
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 22, 2023 at 02:52 PM
+-- Generation Time: Sep 28, 2023 at 09:28 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -77,7 +76,7 @@ CREATE TABLE `festivals` (
   `FesID` int(11) NOT NULL,
   `FesName` varchar(50) DEFAULT NULL,
   `DateStart` date DEFAULT NULL,
-  `ImagePath` varchar(255) DEFAULT NULL,
+  `Description` text DEFAULT NULL,
   `CountryID` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -85,10 +84,19 @@ CREATE TABLE `festivals` (
 -- Dumping data for table `festivals`
 --
 
-INSERT INTO `festivals` (`FesID`, `FesName`, `DateStart`, `ImagePath`, `CountryID`) VALUES
-(1, 'Summer Music Festival', '2023-07-15', '/images/summerfest.jpg', 1),
-(2, 'Winter Carnival', '2023-12-10', '/images/wintercarnival.jpg', 2),
-(3, 'Bastille Day', '2023-07-14', '/images/bastilleday.jpg', 3);
+INSERT INTO `festivals` (`FesID`, `FesName`, `DateStart`, `Description`, `CountryID`) VALUES
+(1, 'Summer Music Festival', '2023-07-15', 'great occasion for music enjoyer to come', 1),
+(2, 'Winter Carnival', '2023-12-10', 'Big occasion for people who has the thing for winter', 2),
+(3, 'Bastille Day', '2023-07-14', 'Nah, just some demo festival for web app', 3),
+(4, 'burning photo', '2023-09-14', 'abcde', 3),
+(5, 'NEW FESTIVAL ', '2023-09-13', 'asdjasfiasjnfkasnfas', 3),
+(6, 'NEW FESTIVAL 2', '2023-08-11', 'dasdasdasdas', 1),
+(7, 'NEW FESTIVAL 3 ', '2023-09-06', 'fajflkan vaknksfsafaf sad as  ascmslkmlaksfcxcaskfannc askndalksncasm ', 1),
+(8, 'NEW FESTIVAL 4', '2023-09-20', 'I wanto p33 p33', 2),
+(9, 'NEW FESTIVAL  5', '2023-09-20', 'dasfnkas c asndljanslcna  c as sancljansn asnclasln alnlkan lsndlaknsdasd', 3),
+(10, 'NEW FESTIVAL 6', '2023-09-29', 'ASSDASDASDASDASDASDASDASDASD', 1),
+(11, 'what tho facs', '2023-09-06', 'asdasda', 3),
+(12, 'asdasdasdasda', '2023-09-14', 'ietowtuwehgnjdsnknvs', 2);
 
 -- --------------------------------------------------------
 
@@ -110,7 +118,16 @@ INSERT INTO `festivals_gallery` (`id`, `gallery_id`, `festival_id`) VALUES
 (1, 1, 1),
 (2, 2, 1),
 (3, 3, 2),
-(4, 1, 3);
+(4, 1, 3),
+(5, 4, 4),
+(6, 5, 5),
+(7, 6, 6),
+(8, 7, 7),
+(9, 8, 8),
+(10, 9, 9),
+(11, 10, 10),
+(12, 11, 11),
+(13, 12, 12);
 
 -- --------------------------------------------------------
 
@@ -132,7 +149,16 @@ CREATE TABLE `gallery` (
 INSERT INTO `gallery` (`ImageID`, `ImageTitle`, `ImagePath`, `UploadDate`) VALUES
 (1, 'Nature Scenery', '/images/nature.jpg', '2023-09-22 14:00:00'),
 (2, 'Cityscape', '/images/city.jpg', '2023-09-22 14:30:00'),
-(3, 'Wildlife', '/images/wildlife.jpg', '2023-09-22 15:15:00');
+(3, 'Wildlife', '/images/wildlife.jpg', '2023-09-22 15:15:00'),
+(4, 'title', 'magnifying-glass.png', '2023-09-29 01:29:20'),
+(5, 'title', 'image_2023-09-29_013419822.png', '2023-09-29 01:34:24'),
+(6, 'title', 'image_2023-09-29_013538042.png', '2023-09-29 01:35:49'),
+(7, 'title', 'image_2023-09-29_013645117.png', '2023-09-29 01:36:52'),
+(8, 'title', 'image_2023-09-29_013804465.png', '2023-09-29 01:38:14'),
+(9, 'title', 'image_2023-09-29_013920951.png', '2023-09-29 01:39:29'),
+(10, 'title', 'image_2023-09-29_014300094.png', '2023-09-29 01:43:08'),
+(11, 'title', 'photo-1569622296640-38737c1d82de.jpg', '2023-09-29 01:43:28'),
+(12, 'title', 'magnifying-glass.svg', '2023-09-29 01:43:59');
 
 -- --------------------------------------------------------
 
@@ -225,19 +251,19 @@ ALTER TABLE `country`
 -- AUTO_INCREMENT for table `festivals`
 --
 ALTER TABLE `festivals`
-  MODIFY `FesID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `FesID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `festivals_gallery`
 --
 ALTER TABLE `festivals_gallery`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `gallery`
 --
 ALTER TABLE `gallery`
-  MODIFY `ImageID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ImageID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `users`

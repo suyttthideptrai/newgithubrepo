@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin page</title>
     <link rel="stylesheet" href="../assets/css/style.css">
+
 </head>
+<?php
+    require_once "style.html";
+?>
 <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,7 +18,7 @@
             padding: 0;
             display: flex;
             flex-direction: column;
-            height: calc(100vh - );
+            height: calc(100vh);
         }
         nav {
             background-color: #333;

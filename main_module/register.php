@@ -2,7 +2,6 @@
 require_once "../utils/config.php";
 session_start();
 
-$username = $password = $email = "";
 $usernameERR = $passwordERR = $emailERR = "";
 $success = false;
 $error_message = "";
@@ -12,24 +11,24 @@ if (isset($_POST['_submit'])) {
     try {
         // Kiểm tra và xử lý dữ liệu đầu vào
         if (empty($_POST['username'])) {
+            //not empty
             $usernameERR = "Username is required";
-        } else {
+        } elseif ($_POST['username'] < 8) {
+            //proper length
+            $usernameERR = "Username must be at least 8 characters long";
+        }else{
             $username = sanitize($_POST['username']);
-            if (strlen($username) < 8) {
-                $usernameERR = "Username must be at least 8 characters long";
-            }
         }
-
+        //filter input password
         if (empty($_POST['password'])) {
             $passwordERR = "Password is required";
-        } else {
+        } elseif (!preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/", $_POST['password'])) {
+            $passwordERR = "Password must contain at least one lowercase letter, one uppercase letter, and one digit";
+        }else {
             $password = sanitize($_POST['password']);
-            if (!preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/", $password)) {
-                $passwordERR = "Password must contain at least one lowercase letter, one uppercase letter, and one digit";
-            }
             $password_hashed = sha1($password);
         }
-
+        //filter email
         if (empty($_POST['email'])) {
             $emailERR = "Email is required";
         } else {
@@ -51,11 +50,13 @@ if (isset($_POST['_submit'])) {
             } else {
                 $t = time();
                 $currentDatetime = date('Y-m-d H:i:s', $t);
-                $sqlstr = "INSERT INTO users(username, password, email, created_at, updated_at) VALUES ('$username', '$password_hashed', '$email', '$currentDatetime', '$currentDatetime')";
+                $sqlstr = "INSERT INTO users(username, password, email, created_at, updated_at, role) VALUES ('$username', '$password_hashed', '$email', '$currentDatetime', '$currentDatetime', '1')";
                 $result = $conn->query($sqlstr);
                 if ($result) {
                     // Tài khoản đã được thêm thành công vào cơ sở dữ liệu, gửi email xác nhận
                     require_once "./sendmail_registerSuccess.php";
+                    unset($_SESSION['username']);
+                    unset($_SESSION['password']);
                 } else {
                     $error_message = "Create Account failed, please try again later";
                 }
@@ -137,7 +138,7 @@ if (isset($_POST['_submit'])) {
 
                             <div class="mb-2">
                                 <label class="form-label" for="password">Password: </label>
-                                <input class="form-control" type="text" name="password" placeholder="Password" id="password">
+                                <input class="form-control" type="password" name="password" placeholder="Password" id="password">
                                 <span class="errors"><?php echo $passwordERR; ?></span>
                             </div>
 

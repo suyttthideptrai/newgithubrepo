@@ -1,37 +1,114 @@
 <?php
+    require_once "config.php";
+    $conn->autocommit(FALSE);
     $sql = "select CountryID, CountryName from country";
     $result = mysqli_query($conn, $sql);
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["addNewFestival"])) {
-        $festivalName = $_POST["festival_name"];
-        $dateStart = $_POST["date_start"];
-        $countryID = $_POST["country_id"];
-    
-        $targetDirectory = "assets/img/";
-        $targetFile = $targetDirectory . basename($_FILES["image"]["name"]);
-        move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile);
-    
-        // Insert festival data into the database
-        $sql = "INSERT INTO festivals (FesName, DateStart, ImagePath, CountryID) VALUES (?, ?, ?, ?)";
-        $stmt = mysqli_prepare($conn, $sql);
-    
-        if ($stmt) {
-            mysqli_stmt_bind_param($stmt, "sssi", $festivalName, $dateStart, $targetFile, $countryID);
-            if (mysqli_stmt_execute($stmt)) {
-                echo "Festival added successfully.";
-            } else {
-                echo "Error: " . mysqli_error($conn);
-            }
-            mysqli_stmt_close($stmt);
-        } else {
-            echo "Error: " . mysqli_error($conn);
-        }
+        //add image to designated path
+        $serverRoot = $_SERVER['DOCUMENT_ROOT'];
+        $targetDirectory = $serverRoot . "/assets/img/";
+        $fileName = basename($_FILES["image"]["name"]);
+        $targetFile = $targetDirectory . $fileName;
+        if(move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)){
+            //get form elements
+            $festivalName = $_POST["festival_name"];
+            $date = $_POST["date_start"];
+            $description = $_POST["description"];
+            $countryID = $_POST["country_id"];
+            $t = time();
+            $currentDatetime = date('Y-m-d H:i:s', $t);
+            //1st data insertion
+            $sqlFestival = "INSERT INTO festivals (FesName, DateStart, Description, CountryID) VALUES (?, ?, ?, ?)";
+            $stmtFestival = $conn->prepare($sqlFestival);
+            $stmtFestival->bind_param("ssss", $festivalName, $date, $description, $countryID);
+
+            if ($stmtFestival->execute()) {
+                //get last inserted ID
+                
+                $lastInsertedFestivalID = $stmtFestival->insert_id;
+                // Insert image data into the database
+                $sqlImage = "INSERT INTO gallery (ImageTitle, ImagePath, UploadDate) VALUES ('title', '$fileName', '$currentDatetime');";
+
+                if (mysqli_query($conn, $sqlImage)) {
+                    //get last inserted imageID
+                    $lastInsertedImageID = $conn->insert_id;
+                    
+                    // Link festival and image
+                    $sqlLink = "INSERT INTO festivals_gallery (gallery_id, festival_id) VALUES (?, ?)";
+                    $stmtLink = $conn->prepare($sqlLink);
+                    $stmtLink->bind_param("ii", $lastInsertedImageID, $lastInsertedFestivalID);
         
-        mysqli_close($conn);
+                        if ($stmtLink->execute()) {
+                            $conn->commit();
+                            // Insert successful
+                            echo '<div style="width=100vw; text-align: center;"><span style="position: absolute;
+                                            border-top: 25px;
+                                            color: green;
+                                            text-align: center;
+                                            border: 1px solid black;
+                                            border-collapse: collapse;
+                                            border-radius: 5px;
+                                            padding: 5px;"
+                                >Successfully added ' . $festivalName . ' to the database!</span></div>';
+            } else {
+                $conn->rollback();
+                // Insert failed
+                echo '<div style="width=100vw; text-align: center;"><span style="position: absolute;
+                                    border-top: 25px;
+                                    color: red;
+                                    text-align: center;
+                                    border: 1px solid black;
+                                    border-collapse: collapse;
+                                    border-radius: 5px;
+                                    padding: 5px;"
+                    >Error: Adding festival image link step</span></div>';
+            }
+        }
+         else {
+            $conn->rollback();
+            // Insert failed
+        echo ' <div style="width=100vw; text-align: center;"><span style="position: absolute;
+                        border-top: 25px;
+                        color: red;
+                        text-align: center;
+                        border: 1px solid black;
+                        border-collapse: collapse;
+                        border-radius: 5px;
+                        padding: 5px;"
+            >Error: Adding festival image directory
+             step</span></div>';
+                }
+            }else{
+                $conn->rollback();
+                // Insert failed
+                echo'<div style="width=100vw; text-align: center;"><span style="position: absolute;
+                            border-top: 25px;
+                            color: red;
+                            text-align: center;
+                            border: 1px solid black;
+                            border-collapse: collapse;
+                            border-radius: 5px;
+                            padding: 5px;"
+                >Error: Adding festival step</span></div>';
+            }
+        }else{
+            //image upload failed
+            echo'<div style="width=100vw; text-align: center;"><span style="position: absolute;
+                        border-top: 25px;
+                        color: red;
+                        text-align: center;
+                        border: 1px solid black;
+                        border-collapse: collapse;
+                        border-radius: 5px;
+                        padding: 5px;"
+                >Sorry, there were some issue whilst uploading your image!</span></div>';
+        }
+        $conn->autocommit(TRUE);
     }
 ?>
 <div>
     <h2>Add Festival</h2>
-    <form method="POST" action="" enctype="multipart/form-data">
+    <form method="POST" id="addForm" action="" type="hidden" enctype="multipart/form-data">
         <div>
             <label for="festival_name">Festival Name:</label>
             <input type="text" name="festival_name" required><br><br>
@@ -40,6 +117,11 @@
         <div>
             <label for="date_start">Date Start:</label>
             <input type="date" name="date_start" required><br><br>
+        </div>
+
+        <div>
+            <label for="date_start">Festival Description: </label>
+            <input type="text" name="description" required><br><br>
         </div>
 
         <div>
@@ -59,6 +141,23 @@
             </select><br><br>
         </div>
 
-        <button type="submit" name="addNewFestival">Proceed</button>
+        <button type="submit" id="addFormSubmit" name="addNewFestival">Proceed</button>
     </form>
 </div>
+<script>
+// $(document).ready(function() {
+//     $("#addFormSubmit").click(function() {
+//         var formData = $("#myForm").serialize(); // Serialize form data
+
+//         $.ajax({
+//             type: "POST",
+//             url: "process.php", // Replace with the PHP script that handles form submission
+//             data: formData,
+//             success: function(response) {
+//                 // Update the result div with the response from the server
+//                 $("#result").html(response);
+//             }
+//         });
+//     });
+// });
+</script>
