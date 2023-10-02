@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["btn-find"])) {
                 <td><?php echo $row['CountryName']; ?></td>
                 <td><?php echo $row['DateStart']; ?></td>
                 <td>
-                    <a href="views/functions/festival_edit?id=<?php echo $row['FesID']; ?>">Edit</a>
+                    <button onclick="<?php echo 'openPopup(' . $row['FesID'] .')' ?>">Edit</button>
                     <a href="views/functions/festival_delete.php?id=<?php echo $row['FesID']; ?>">Delete</a>
                 </td>
             </tr>
@@ -66,3 +66,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["btn-find"])) {
         } ?>
     </table>
 </div>
+<script>
+    function openPopup(id) {
+        // Define the URL of the PHP file to be displayed in the pop-up
+        var popupURL = 'views/functions/festival_edit.php?id=';
+        popupURL += id;
+
+
+        // Define window properties
+        var popupWidth = 600;
+        var popupHeight = 500;
+
+        // Calculate the center position of the pop-up
+        var left = (screen.width - popupWidth) / 2;
+        var top = (screen.height - popupHeight) / 2;
+
+        // Open the pop-up window
+        window.open(popupURL, 'Pop-up Window', 'width=' + popupWidth + ', height=' + popupHeight + ', left=' + left + ', top=' + top);
+    }
+</script>
+

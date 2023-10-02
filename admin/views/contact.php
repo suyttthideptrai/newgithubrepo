@@ -1,7 +1,11 @@
+
 <section>
     <div class="content-wrapper">
         <h3>
-            User Contacts via Website
+            User contact via website
         </h3>
+        <div>
+            <?php require_once "functions/contact_list.php"; ?>
+        </div>
     </div>
 </section>

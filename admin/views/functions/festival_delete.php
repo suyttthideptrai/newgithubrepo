@@ -94,5 +94,5 @@ require_once "config.php";
     }
 }
     // Execute the deletion queries
-// Rest of your HTML and PHP code here
+   // Rest of your HTML and PHP code here
 ?>

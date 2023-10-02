@@ -1,10 +1,11 @@
 <?php
     require_once "config.php";
-    $conn->autocommit(FALSE);
     $sql = "select CountryID, CountryName from country";
     $result = mysqli_query($conn, $sql);
+    $conn->autocommit(FALSE);
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["addNewFestival"])) {
         //add image to designated path
+        
         $serverRoot = $_SERVER['DOCUMENT_ROOT'];
         $targetDirectory = $serverRoot . "/assets/img/";
         $fileName = basename($_FILES["image"]["name"]);

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 28, 2023 at 09:28 PM
+-- Generation Time: Oct 02, 2023 at 03:46 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -20,6 +20,21 @@ SET time_zone = "+00:00";
 --
 -- Database: `moonlightfestival`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `blog`
+--
+
+CREATE TABLE `blog` (
+  `post_ID` int(11) NOT NULL,
+  `author_userID` int(11) DEFAULT NULL,
+  `description` varchar(255) NOT NULL,
+  `post_content` text NOT NULL,
+  `image_link` varchar(1000) DEFAULT NULL,
+  `publish_date` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -85,7 +100,6 @@ CREATE TABLE `festivals` (
 --
 
 INSERT INTO `festivals` (`FesID`, `FesName`, `DateStart`, `Description`, `CountryID`) VALUES
-(1, 'Summer Music Festival', '2023-07-15', 'great occasion for music enjoyer to come', 1),
 (2, 'Winter Carnival', '2023-12-10', 'Big occasion for people who has the thing for winter', 2),
 (3, 'Bastille Day', '2023-07-14', 'Nah, just some demo festival for web app', 3),
 (4, 'burning photo', '2023-09-14', 'abcde', 3),
@@ -96,7 +110,7 @@ INSERT INTO `festivals` (`FesID`, `FesName`, `DateStart`, `Description`, `Countr
 (9, 'NEW FESTIVAL  5', '2023-09-20', 'dasfnkas c asndljanslcna  c as sancljansn asnclasln alnlkan lsndlaknsdasd', 3),
 (10, 'NEW FESTIVAL 6', '2023-09-29', 'ASSDASDASDASDASDASDASDASDASD', 1),
 (11, 'what tho facs', '2023-09-06', 'asdasda', 3),
-(12, 'asdasdasdasda', '2023-09-14', 'ietowtuwehgnjdsnknvs', 2);
+(14, 'NEW FES', '2023-10-03', 'adsadafas', 2);
 
 -- --------------------------------------------------------
 
@@ -115,8 +129,6 @@ CREATE TABLE `festivals_gallery` (
 --
 
 INSERT INTO `festivals_gallery` (`id`, `gallery_id`, `festival_id`) VALUES
-(1, 1, 1),
-(2, 2, 1),
 (3, 3, 2),
 (4, 1, 3),
 (5, 4, 4),
@@ -127,7 +139,7 @@ INSERT INTO `festivals_gallery` (`id`, `gallery_id`, `festival_id`) VALUES
 (10, 9, 9),
 (11, 10, 10),
 (12, 11, 11),
-(13, 12, 12);
+(15, 14, 14);
 
 -- --------------------------------------------------------
 
@@ -158,7 +170,9 @@ INSERT INTO `gallery` (`ImageID`, `ImageTitle`, `ImagePath`, `UploadDate`) VALUE
 (9, 'title', 'image_2023-09-29_013920951.png', '2023-09-29 01:39:29'),
 (10, 'title', 'image_2023-09-29_014300094.png', '2023-09-29 01:43:08'),
 (11, 'title', 'photo-1569622296640-38737c1d82de.jpg', '2023-09-29 01:43:28'),
-(12, 'title', 'magnifying-glass.svg', '2023-09-29 01:43:59');
+(12, 'title', 'magnifying-glass.svg', '2023-09-29 01:43:59'),
+(13, 'title', 'magnifying-glass.svg', '2023-09-29 03:22:18'),
+(14, 'title', 'image_2023-10-02_190832774.png', '2023-10-02 19:08:38');
 
 -- --------------------------------------------------------
 
@@ -183,11 +197,18 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`UserID`, `Username`, `Password`, `Email`, `Created_at`, `Updated_at`, `Role`) VALUES
 (1, 'user1', 'e38ad214943daad1d64c102faec29de4afe9da3d', 'user1@example.com', '2023-09-22 10:00:00', '2023-09-22 10:00:00', 1),
 (2, 'user2', '2aa60a8ff7fcd473d321e0146afd9e26df395147', 'user2@example.com', '2023-09-22 11:00:00', '2023-09-22 11:00:00', 2),
-(3, 'admin', 'efacc4001e857f7eba4ae781c2932dedf843865e', 'admin@example.com', '2023-09-22 12:00:00', '2023-09-22 12:00:00', 0);
+(3, 'admin', '356a192b7913b04c54574d18c28d46e6395428ab', 'admin@example.com', '2023-09-22 12:00:00', '2023-09-22 12:00:00', 0);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `blog`
+--
+ALTER TABLE `blog`
+  ADD PRIMARY KEY (`post_ID`),
+  ADD KEY `author_userID` (`author_userID`);
 
 --
 -- Indexes for table `contact`
@@ -236,6 +257,12 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `blog`
+--
+ALTER TABLE `blog`
+  MODIFY `post_ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `contact`
 --
 ALTER TABLE `contact`
@@ -251,19 +278,19 @@ ALTER TABLE `country`
 -- AUTO_INCREMENT for table `festivals`
 --
 ALTER TABLE `festivals`
-  MODIFY `FesID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `FesID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `festivals_gallery`
 --
 ALTER TABLE `festivals_gallery`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `gallery`
 --
 ALTER TABLE `gallery`
-  MODIFY `ImageID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `ImageID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -274,6 +301,12 @@ ALTER TABLE `users`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `blog`
+--
+ALTER TABLE `blog`
+  ADD CONSTRAINT `blog_ibfk_1` FOREIGN KEY (`author_userID`) REFERENCES `users` (`UserID`);
 
 --
 -- Constraints for table `festivals`
