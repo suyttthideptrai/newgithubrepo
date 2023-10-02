@@ -5,9 +5,11 @@
     $conn->autocommit(FALSE);
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["addNewFestival"])) {
         //add image to designated path
-        
-        $serverRoot = $_SERVER['DOCUMENT_ROOT'];
-        $targetDirectory = $serverRoot . "/assets/img/";
+        $currentDirectory = __DIR__;
+        // $serverRoot = $_SERVER['DOCUMENT_ROOT'];
+        $substringToRemove = "\admin\\views\\functions";
+        $targetDirectory= str_replace($substringToRemove, "", $currentDirectory) . "\assets\img\\";
+        echo $targetDirectory;
         $fileName = basename($_FILES["image"]["name"]);
         $targetFile = $targetDirectory . $fileName;
         if(move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)){
