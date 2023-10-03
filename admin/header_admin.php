@@ -53,7 +53,7 @@
         <div class="logo">Moonlight Festival</div>
         <ul class="nav-links">
             <li><a href="../index.php">HOME</a></li>
-            <li><a href="../utils/logout.php">Logout</a></li>
+            <li><a href="../logout.php">Logout</a></li>
         </ul>
     </nav>
     </header>

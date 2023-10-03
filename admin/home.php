@@ -58,7 +58,7 @@
                             break;
                         
                         case 'Registering':
-                            include('views/user_register.php');
+                            include('views/list_user.php');
                             break;
                         
                         default:

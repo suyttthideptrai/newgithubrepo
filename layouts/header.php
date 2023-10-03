@@ -197,7 +197,7 @@
                     ?>
                     <?php
                         if(isset($_SESSION['User'])){
-                            echo '<li><a class="dropdown-item" href="utils/logout.php">Logout</a></li>';
+                            echo '<li><a class="dropdown-item" href="main_module/logout.php">Logout</a></li>';
                             }
                     ?>
                     <?php

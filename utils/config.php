@@ -9,6 +9,9 @@ define("DB_NAME", "moonlightfestival");
 //set default timezone
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 
+//BASE_URL
+define("BASE_URL", "http://localhost/newgithubrepo/");
+
 //establish database connection
 $conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
 

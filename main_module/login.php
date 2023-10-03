@@ -43,11 +43,8 @@ if (isset($_POST['_submit'])) {
                 $_SESSION['User']['Username'] = $user['Username'];
                 $_SESSION['User']['Role'] = $user['Role'];
 
-                //Kiểm tra xem người dùng có chọn Remember me hay không?
                 if (isset($_POST['remember_me']) && $_POST['remember_me'] == 'on'){
-                    //Nếu có, lưu thông tin đăng nhập vào cookies
                     setcookie('rememeber_username', $username, time() + 3600 * 24 * 30);
-                    //Cookies sẽ hết hạn sau 30 ngày
                 }
             }
         }
