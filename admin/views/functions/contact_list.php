@@ -1,10 +1,10 @@
 <?php
-$sql = "SELECT * FROM contact";
+$sql = "SELECT * FROM contact order by ID desc;";
 $result = mysqli_query($conn, $sql);
 
 if (mysqli_num_rows($result) > 0) {
     // Output table header
-    echo "<table border='1'>";
+    echo "<div class=\"scroll-container\"><table border='1'>";
     echo "<tr><th>ID</th><th>Name</th><th>Email</th><th>Phone Number</th><th>Created_at</th><th>Message</th><th>actions</th></tr>";
 
     // Loop through the results and display each row in the table
@@ -16,11 +16,14 @@ if (mysqli_num_rows($result) > 0) {
         echo "<td>" . $row["PhoneNumber"] . "</td>";
         echo "<td>" . $row["Created_at"] . "</td>";
         echo "<td>" . $row["Message"] . "</td>";
-        echo "<td><button onlick=\"reply(" . $row["ID"] . ")'\">reply</button></td>";
+        echo "<td><button type=\"\" onclick=\"reply('" . $row["Email"] . "')\">reply</button> <a href=\"views/functions/contact_delete.php?id=" . $row["ID"] . "\">Delete</a></td>";
         echo "</tr>";
     }
 
-    echo "</table>";
+    echo "</table></div>";
+    echo "<p>" . __DIR__ . "</p>";
 } else {
     echo "No records found.";
 }
+?>
+

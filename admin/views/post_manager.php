@@ -1,7 +1,7 @@
 <section>
     <div class="content-wrapper">
-        <h3>
-            Posts
-        </h3>
+        <div>
+            <?php require_once "functions/post_add.php" ?> 
+        </div>
     </div>
 </section>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 02, 2023 at 03:46 PM
+-- Generation Time: Oct 03, 2023 at 04:34 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -32,8 +32,18 @@ CREATE TABLE `blog` (
   `author_userID` int(11) DEFAULT NULL,
   `description` varchar(255) NOT NULL,
   `post_content` text NOT NULL,
-  `image_link` varchar(1000) DEFAULT NULL,
   `publish_date` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `blog_gallery`
+--
+
+CREATE TABLE `blog_gallery` (
+  `blog_ID` int(5) NOT NULL,
+  `blog_img_path` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -68,18 +78,36 @@ INSERT INTO `contact` (`ID`, `Name`, `Email`, `PhoneNumber`, `Created_at`, `Mess
 
 CREATE TABLE `country` (
   `CountryID` int(11) NOT NULL,
-  `CountryName` varchar(50) DEFAULT NULL,
-  `ImageID` int(11) DEFAULT NULL
+  `CountryName` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `country`
 --
 
-INSERT INTO `country` (`CountryID`, `CountryName`, `ImageID`) VALUES
-(1, 'USA', 1),
-(2, 'Canada', 2),
-(3, 'France', 3);
+INSERT INTO `country` (`CountryID`, `CountryName`) VALUES
+(2, 'Canada'),
+(3, 'France'),
+(1, 'USA'),
+(4, 'Vietnam');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `country_gallery`
+--
+
+CREATE TABLE `country_gallery` (
+  `ID` int(3) NOT NULL,
+  `ImgPath` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `country_gallery`
+--
+
+INSERT INTO `country_gallery` (`ID`, `ImgPath`) VALUES
+(4, '651b7687bdf3d_Flag_of_Vietnam.svg.png');
 
 -- --------------------------------------------------------
 
@@ -110,7 +138,11 @@ INSERT INTO `festivals` (`FesID`, `FesName`, `DateStart`, `Description`, `Countr
 (9, 'NEW FESTIVAL  5', '2023-09-20', 'dasfnkas c asndljanslcna  c as sancljansn asnclasln alnlkan lsndlaknsdasd', 3),
 (10, 'NEW FESTIVAL 6', '2023-09-29', 'ASSDASDASDASDASDASDASDASDASD', 1),
 (11, 'what tho facs', '2023-09-06', 'asdasda', 3),
-(14, 'NEW FES', '2023-10-03', 'adsadafas', 2);
+(14, 'NEW FES', '2023-10-03', 'adsadafas', 2),
+(15, 'who\'s the boss', '2023-10-03', 'dasljflsajflasfkasjlkdjasd', 2),
+(16, 'afkjsalfjalsjfsaa', '2023-10-18', 'aslkfaslkjflkasflkas', 2),
+(17, 'new festival', '2034-02-12', 'I don\'t know nhung suy tu trong dau', 3),
+(18, 'Rap star', '2023-10-03', 'afkaslfjasljfas', 1);
 
 -- --------------------------------------------------------
 
@@ -139,7 +171,11 @@ INSERT INTO `festivals_gallery` (`id`, `gallery_id`, `festival_id`) VALUES
 (10, 9, 9),
 (11, 10, 10),
 (12, 11, 11),
-(15, 14, 14);
+(15, 14, 14),
+(16, 15, 15),
+(17, 16, 16),
+(18, 17, 17),
+(19, 18, 18);
 
 -- --------------------------------------------------------
 
@@ -172,7 +208,11 @@ INSERT INTO `gallery` (`ImageID`, `ImageTitle`, `ImagePath`, `UploadDate`) VALUE
 (11, 'title', 'photo-1569622296640-38737c1d82de.jpg', '2023-09-29 01:43:28'),
 (12, 'title', 'magnifying-glass.svg', '2023-09-29 01:43:59'),
 (13, 'title', 'magnifying-glass.svg', '2023-09-29 03:22:18'),
-(14, 'title', 'image_2023-10-02_190832774.png', '2023-10-02 19:08:38');
+(14, 'title', 'image_2023-10-02_190832774.png', '2023-10-02 19:08:38'),
+(15, 'title', 'city.jpg', '2023-10-02 21:02:40'),
+(16, 'title', 'photo-1569622296640-38737c1d82de.jpg', '2023-10-02 21:19:50'),
+(17, 'title', 'Screenshot 2023-09-22 132142.png', '2023-10-03 08:07:48'),
+(18, 'title', 'Screenshot 2023-09-22 132142.png', '2023-10-03 08:10:24');
 
 -- --------------------------------------------------------
 
@@ -211,6 +251,12 @@ ALTER TABLE `blog`
   ADD KEY `author_userID` (`author_userID`);
 
 --
+-- Indexes for table `blog_gallery`
+--
+ALTER TABLE `blog_gallery`
+  ADD KEY `FK_blog_gallery` (`blog_ID`);
+
+--
 -- Indexes for table `contact`
 --
 ALTER TABLE `contact`
@@ -222,6 +268,12 @@ ALTER TABLE `contact`
 ALTER TABLE `country`
   ADD PRIMARY KEY (`CountryID`),
   ADD UNIQUE KEY `CountryName` (`CountryName`);
+
+--
+-- Indexes for table `country_gallery`
+--
+ALTER TABLE `country_gallery`
+  ADD KEY `FK_country_gallery` (`ID`);
 
 --
 -- Indexes for table `festivals`
@@ -272,25 +324,25 @@ ALTER TABLE `contact`
 -- AUTO_INCREMENT for table `country`
 --
 ALTER TABLE `country`
-  MODIFY `CountryID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `CountryID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `festivals`
 --
 ALTER TABLE `festivals`
-  MODIFY `FesID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `FesID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `festivals_gallery`
 --
 ALTER TABLE `festivals_gallery`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `gallery`
 --
 ALTER TABLE `gallery`
-  MODIFY `ImageID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `ImageID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -307,6 +359,18 @@ ALTER TABLE `users`
 --
 ALTER TABLE `blog`
   ADD CONSTRAINT `blog_ibfk_1` FOREIGN KEY (`author_userID`) REFERENCES `users` (`UserID`);
+
+--
+-- Constraints for table `blog_gallery`
+--
+ALTER TABLE `blog_gallery`
+  ADD CONSTRAINT `FK_blog_gallery` FOREIGN KEY (`blog_ID`) REFERENCES `blog` (`post_ID`);
+
+--
+-- Constraints for table `country_gallery`
+--
+ALTER TABLE `country_gallery`
+  ADD CONSTRAINT `FK_country_gallery` FOREIGN KEY (`ID`) REFERENCES `country` (`CountryID`);
 
 --
 -- Constraints for table `festivals`
