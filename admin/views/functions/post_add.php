@@ -35,8 +35,7 @@ if (isset($_POST['submit'])) {
         echo "Error uploading the header image.";
     }
 }
-
-mysqli_close($conn);
+    
 ?>
 
 <h1>Add Blog Post</h1>

@@ -6,10 +6,9 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["addNewFestival"])) {
         //add image to designated path
         $currentDirectory = __DIR__;
-        // $serverRoot = $_SERVER['DOCUMENT_ROOT'];
-        $substringToRemove = "\admin\\views\\functions";
-        $targetDirectory= str_replace($substringToRemove, "", $currentDirectory) . "\assets\img\\";
-        echo $targetDirectory;
+        $substringToRemove = "/admin/views/functions";
+        
+        $targetDirectory = removeSubstringFromPath($currentDirectory, $substringToRemove) . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . "img" . DIRECTORY_SEPARATOR;
         $fileName = basename($_FILES["image"]["name"]);
         $targetFile = $targetDirectory . $fileName;
         if(move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)){
